@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 
 const Course = ({ children }) => {
   const router = useRouter();
+  const superclusterId = router.query.supercluster;
+  const galaxyId = router.query.galaxy;
   const clusterId = router.query.cluster;
   const starId = router.query.star;
 
@@ -19,7 +21,10 @@ const Course = ({ children }) => {
 
   const ListItem = ({ name, slug }) => {
     return (
-      <Link href={`/${clusterId}/${slug}`} passHref>
+      <Link
+        href={`/${superclusterId}/${galaxyId}/${clusterId}/${slug}`}
+        passHref
+      >
         <a>
           <li
             className={`p-4 border-l-4 text-2xl font-normal ease-in border-transparent text-gray-600 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-800 ${
@@ -39,7 +44,7 @@ const Course = ({ children }) => {
       {data ? (
         <aside className="hidden sm:block w-11/12 sm:w-96 z-50 bg-white dark:bg-gray-900 h-screen fixed shadow-2xl ">
           <div className="p-4 shadow-lg">
-            <Link href={`/${clusterId}`}>
+            <Link href={`/${superclusterId}/${galaxyId}/${clusterId}`}>
               <a>
                 <h1 className="font-bold text-6xl text-blue-700 dark:text-blue-400 ">
                   {data.title}
@@ -50,11 +55,7 @@ const Course = ({ children }) => {
 
           <ul className="overflow-y-scroll h-full pb-8">
             {data.stars?.map((star) => (
-              <ListItem
-                name={star.title}
-                key={star._id}
-                slug={star.slug}
-              />
+              <ListItem name={star.title} key={star._id} slug={star.slug} />
             ))}
           </ul>
         </aside>

@@ -1,10 +1,10 @@
 import React from "react";
 import Head from "next/head";
-import Course from "../../layouts/Course";
+import Course from "../../../../layouts/Course";
 import { useRouter } from "next/router";
-import YoutubeVideo from "../../components/subject/YoutubeVideo";
-import BlogItem from "../../components/subject/BlogItem";
-import Quote from "../../components/subject/Quote";
+import YoutubeVideo from "../../../../components/subject/YoutubeVideo";
+import BlogItem from "../../../../components/subject/BlogItem";
+import Quote from "../../../../components/subject/Quote";
 
 function Chapter({ data }) {
   const router = useRouter();
@@ -12,7 +12,8 @@ function Chapter({ data }) {
   if (!data) {
     return (
       <h1>
-        cluster of {router.query.cluster}, star {router.query.star} is loading....
+        cluster of {router.query.cluster}, star {router.query.star} is
+        loading....
       </h1>
     );
   }
@@ -50,29 +51,20 @@ function Chapter({ data }) {
                 </ul>
               </section>
             )}
-          </main>
-          {/* <aside className="flex flex-col px-8 lg:pt-8 lg:p-0 lg:pr-8">
-            {data.notes?.length !== 0 && (
-              <section>
-                <h1 className="text-4xl mb-4">
-                  <span className="underline">Stars</span>✨
-                </h1>
-                {data.notes.map((note, index) => (
-                  <Quote key={index} text={note.message} type={note.type} />
-                ))}
+            {data.note && (
+              <section className="">
+                <Quote text={data.note} />
               </section>
             )}
-          </aside> */}
+          </main>
         </div>
       </div>
     </>
   );
 }
 
-export const getStaticProps = async (content) => {
-  const res = await fetch(
-    `http://localhost:1337/stars/${content.params.star}`
-  );
+export const getStaticProps = async ({ params }) => {
+  const res = await fetch(`http://localhost:1337/stars/${params.star}`);
   const data = await res.json();
   return {
     props: { data },
@@ -85,7 +77,12 @@ export const getStaticPaths = async () => {
   const path = data.map((cluster) => {
     return cluster.stars.flat().map((star) => {
       return {
-        params: { cluster: cluster.slug, star: star.slug },
+        params: {
+          supercluster: cluster.supercluster.slug,
+          galaxy: cluster.galaxy.slug,
+          cluster: cluster.slug,
+          star: star.slug,
+        },
       };
     });
   });

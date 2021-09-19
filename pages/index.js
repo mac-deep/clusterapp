@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { data } from "autoprefixer";
+import { AllSuperCluster } from "../adapters/supercluster";
 
 const ThemeChanger = () => {
   const [mounted, setMounted] = useState(false);
@@ -46,10 +46,10 @@ export default function Home({ data }) {
       <div className="px-8">
         <h1 className="text-6xl mb-8">Links</h1>
         <ul>
-          {data.map((cluster) => (
-            <Link href={`/${cluster.slug}`} key={cluster._id}>
+          {data.map((supercluster) => (
+            <Link href={`/${supercluster.slug}`} key={supercluster._id}>
               <a>
-                <li className="text-3xl py-2">{cluster.title}</li>
+                <li className="text-3xl py-2">{supercluster.title}</li>
               </a>
             </Link>
           ))}
@@ -60,7 +60,7 @@ export default function Home({ data }) {
 }
 
 export const getStaticProps = async (content) => {
-  const res = await fetch("http://localhost:1337/clusters");
+  const res = await fetch("http://localhost:1337/superclusters");
   const data = await res.json();
   return {
     props: { data },

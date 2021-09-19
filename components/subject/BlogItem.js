@@ -9,3 +9,5 @@ const BlogItem = ({ title, url }) => (
     </a>
   </Link>
 );
+
+export default BlogItem
