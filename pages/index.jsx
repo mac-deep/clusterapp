@@ -1,27 +1,26 @@
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Head from "next/head";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { AllSuperCluster } from "../adapters/supercluster";
 
 const ThemeChanger = () => {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-
+  const { setTheme } = useTheme();
   // When mounted on client, now we can show the UI
   useEffect(() => setMounted(true), []);
-
   if (!mounted) return null;
-
   return (
     <div className="absolute top-8 right-8">
       <button
+        type="button"
         className="rounded-full m-4 w-12 h-12 "
         onClick={() => setTheme("light")}
       >
         L
       </button>
       <button
+        type="button"
         className="rounded-full m-4 w-12 h-12"
         onClick={() => setTheme("dark")}
       >
@@ -31,7 +30,7 @@ const ThemeChanger = () => {
   );
 };
 
-export default function Home({ data }) {
+export default function Home({ superclusters }) {
   return (
     <div className="dark:bg-black min-h-screen">
       <Head>
@@ -46,11 +45,9 @@ export default function Home({ data }) {
       <div className="px-8">
         <h1 className="text-6xl mb-8">Links</h1>
         <ul>
-          {data.map((supercluster) => (
-            <Link href={`/${supercluster.slug}`} key={supercluster._id}>
-              <a>
-                <li className="text-3xl py-2">{supercluster.title}</li>
-              </a>
+          {superclusters.map((supercluster) => (
+            <Link href={`/${supercluster.slug}`} key={supercluster.id} passHref>
+              <li className="text-3xl py-2">{supercluster.title}</li>
             </Link>
           ))}
         </ul>
@@ -59,10 +56,22 @@ export default function Home({ data }) {
   );
 }
 
-export const getStaticProps = async (content) => {
-  const res = await fetch("http://localhost:1337/superclusters");
-  const data = await res.json();
+Home.propTypes = {
+  superclusters: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+    })
+  ),
+};
+
+Home.defaultProps = {
+  superclusters: [],
+};
+
+export const getStaticProps = async () => {
+  const res = await fetch("https://clustercms.herokuapp.com/superclusters");
+  const superclusters = await res.json();
   return {
-    props: { data },
+    props: { superclusters },
   };
 };

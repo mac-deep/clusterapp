@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function YoutubeVideo({ id }) {
   return (
@@ -19,5 +20,13 @@ function YoutubeVideo({ id }) {
     </div>
   );
 }
+
+YoutubeVideo.propTypes = {
+  id: PropTypes.string,
+};
+
+YoutubeVideo.defaultProps = {
+  id: "5qap5aO4i9A",
+};
 
 export default YoutubeVideo;
