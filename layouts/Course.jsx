@@ -13,7 +13,7 @@ const Course = ({ children }) => {
   const [cluster, setCluster] = useState(null);
 
   const preLoad = async () => {
-    fetch(`http://localhost:1337/clusters/${clusterId}`)
+    fetch(`https://clustercms.herokuapp.com/clusters/${clusterId}`)
       .then((res) => res.json())
       .then((data) => setCluster(data));
   };
