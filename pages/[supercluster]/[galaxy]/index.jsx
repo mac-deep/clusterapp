@@ -1,12 +1,16 @@
 import React from "react";
+import Head from "next/head";
 import PropTypes from "prop-types";
 import ClusterCard from "../../../components/ClusterCard";
 import Title from "../../../components/Title";
 
 const Galaxy = ({ clusters, supercluster, galaxy }) => (
-  <div>
+  <div className="min-h-screen bg-gray-100 dark:bg-black">
+    <Head>
+      <title>{galaxy}</title>
+    </Head>
     <Title title={galaxy} />
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center ">
       <div className="flex sm:full w-10/12 flex-wrap">
         {clusters.length !== 0 ? (
           clusters.map((cluster) => (

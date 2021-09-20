@@ -4,7 +4,7 @@ import GalaxyCard from "../../components/GalaxyCard";
 import Title from "../../components/Title";
 
 const Supercluster = ({ galaxies, supercluster }) => (
-  <div>
+  <div className="dark:bg-black min-h-screen">
     <Title title={supercluster} />
     <div className="w-full flex justify-center">
       <div className="flex sm:full w-10/12  flex-wrap">

@@ -7,7 +7,7 @@ const ClusterCard = ({ title, link, cover, summary }) => (
   <div className="sm:w-1/2 lg:w-1/3 xl:w-1/4 flex flex-col justify-start p-4">
     <Link href={link} passHref>
       {/* <a> */}
-      <div className="p-4 shadow-md hover:shadow-xl rounded-lg border-1 dark:border-gray-800 h-full cursor-pointer">
+      <div className="p-4 shadow-md hover:shadow-xl rounded-lg border-1 dark:hover:border-gray-500 dark:border-gray-800 h-full cursor-pointer">
         <div>
           <Image
             width="600"

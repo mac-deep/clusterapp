@@ -3,7 +3,7 @@ import Markdown from "react-markdown";
 import PropTypes from "prop-types";
 
 const Quote = ({ text }) => (
-  <div className="border-l-4 m  b-4 border-blue-400 p-2 rounded-lg bg-white shadow-md dark:bg-gray-800 bg-opacity-50 dark:text-gray-300">
+  <div className="border-l-4 border-blue-400 p-4 rounded-lg bg-white shadow-md dark:bg-gray-900 bg-opacity-50 dark:text-gray-400">
     <Markdown>{text}</Markdown>
   </div>
 );

@@ -22,25 +22,24 @@ function Star({ star }) {
       <Head>
         <title>{star.title}</title>
       </Head>
-      <div className="dark:bg-black bg-opacity- min-h-full">
-        <div className="p-4 w-full dark:bg-gray-800 ">
-          <h1 className="font-medium text-6xl dark:text-gray-100 leading-tight flex align-middle">
-            👉{star.title}
-          </h1>
+      <div className="flex flex-col lg:flex-row">
+        <div className=" w-full lg:w-9/12">
+          {star.videoURL && (
+            <section className="mb-12">
+              <YoutubeVideo id={star.videoURL} />
+            </section>
+          )}
+          {star.note && (
+            <section className="mb-12">
+              <Quote text={star.note} />
+            </section>
+          )}
         </div>
-        <div className="flex flex-col lg:flex-row">
-          <main className="px-8 pt-8 w-full">
-            {star.videoURL && (
-              <section className="mb-8">
-                <YoutubeVideo id={star.videoURL} />
-              </section>
-            )}
-            {star.note && (
-              <section className="">
-                <Quote text={star.note} />
-              </section>
-            )}
-          </main>
+        <div className="w-full lg:w-1/4">
+          <div className="shadow-md border-l-2 bg-white dark:bg-gray-900 lg:ml-12 p-4 flex-1 h-40 rounded-2xl ">
+            <h3 className="font-medium mb-2">📝Note</h3>
+            <p className="text-xl font-light">Here you can give a tip</p>
+          </div>
         </div>
       </div>
     </>
