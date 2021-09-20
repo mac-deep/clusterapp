@@ -12,6 +12,7 @@
     "axios": "^0.21.4",
     "next": "11.1.2",
     "next-themes": "0.0.15",
+    "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",

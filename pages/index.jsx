@@ -47,7 +47,9 @@ export default function Home({ superclusters }) {
         <ul>
           {superclusters.map((supercluster) => (
             <Link href={`/${supercluster.slug}`} key={supercluster.id} passHref>
-              <li className="text-3xl py-2">{supercluster.title}</li>
+              <li className="text-3xl py-2 cursor-pointer hover:translate-x-2">
+                {supercluster.title}
+              </li>
             </Link>
           ))}
         </ul>
