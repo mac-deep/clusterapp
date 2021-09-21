@@ -47,7 +47,7 @@ const Course = ({ children }) => {
     <div className="relative dark:bg-black bg-gray-100">
       <div
         style={{ lineHeight: "3rem" }}
-        className="p-6 w-full bg-white dark:bg-gray-900 shadow-xl z-50 fixed text-5xl flex justify-between items-center"
+        className="p-6 w-full bg-white dark:bg-gray-900 shadow-lg z-50 fixed text-5xl flex justify-between items-center"
       >
         <div>
           <Link href={`/${superclusterId}/${galaxyId}/${clusterId}`} passHref>

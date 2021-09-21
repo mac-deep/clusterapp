@@ -4,16 +4,17 @@ import GalaxyCard from "../../components/GalaxyCard";
 import Title from "../../components/Title";
 
 const Supercluster = ({ galaxies, supercluster }) => (
-  <div className="dark:bg-black min-h-screen">
+  <div className="dark:bg-black bg-gray-100 min-h-screen">
     <Title title={supercluster} />
     <div className="w-full flex justify-center">
-      <div className="flex sm:full w-10/12  flex-wrap">
+      <div className="flex sm:full w-10/12 flex-wrap">
         {galaxies.length !== 0 ? (
           galaxies.map((galaxy) => (
             <GalaxyCard
               title={galaxy.title}
               key={galaxy.id}
               link={`/${supercluster}/${galaxy.slug}`}
+              summary={galaxy.summary}
             />
           ))
         ) : (

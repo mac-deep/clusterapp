@@ -15,6 +15,10 @@ const Galaxy = ({ clusters, supercluster, galaxy }) => (
         {clusters.length !== 0 ? (
           clusters.map((cluster) => (
             <ClusterCard
+              cover={
+                cluster.cover.formats.medium.url ||
+                cluster.cover.formats.small.url
+              }
               category={cluster.galaxy.title}
               summary={cluster.summary}
               key={cluster.id}
