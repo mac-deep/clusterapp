@@ -3,6 +3,8 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import ClusterCard from "../../../components/ClusterCard";
 import Title from "../../../components/Title";
+import { getAllGalaxies } from "../../../adapters/galaxies";
+import { getAllClustersOf } from "../../../adapters/clusters";
 
 const Galaxy = ({ clusters, supercluster, galaxy }) => (
   <div className="min-h-screen bg-gray-100 dark:bg-black">
@@ -51,11 +53,7 @@ Galaxy.defaultProps = {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const res = await fetch(`https://clustercms.herokuapp.com/clusters`);
-  const data = await res.json();
-  const clusters = data.filter(
-    (cluster) => cluster.galaxy.slug === params.galaxy
-  );
+  const clusters = await getAllClustersOf(params.galaxy);
   return {
     props: {
       supercluster: params.supercluster,
@@ -66,9 +64,10 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const res = await fetch("https://clustercms.herokuapp.com/galaxies");
-  const data = await res.json();
-  const paths = data.map((galaxy) => ({
+  const galaxies = await getAllGalaxies()
+    .then((data) => data)
+    .catch((err) => err);
+  const paths = galaxies.map((galaxy) => ({
     params: { galaxy: galaxy.slug, supercluster: galaxy.supercluster.slug },
   }));
   return {
