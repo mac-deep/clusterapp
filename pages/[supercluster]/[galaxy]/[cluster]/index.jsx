@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Course from "../../../../layouts/Course";
+import { getACluster, getAllClusters } from "../../../../adapters/clusters";
 
 const Cluster = ({ cluster }) => <div>Cluster of {cluster.title}</div>;
 
@@ -15,22 +16,22 @@ Cluster.defaultProps = {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const res = await fetch(
-    `https://clustercms.herokuapp.com/clusters/${params.cluster}`
-  );
-  const data = await res.json();
+  const cluster = await getACluster(params.cluster)
+    .then((data) => data)
+    .catch((err) => err);
   return {
     props: {
       supercluster: params.supercluster,
-      cluster: data,
+      cluster,
     },
   };
 };
 
 export const getStaticPaths = async () => {
-  const res = await fetch("https://clustercms.herokuapp.com/clusters");
-  const data = await res.json();
-  const paths = data.map((cluster) => ({
+  const clusters = await getAllClusters()
+    .then((data) => data)
+    .catch((err) => err);
+  const paths = clusters.map((cluster) => ({
     params: {
       cluster: cluster.slug,
       galaxy: cluster.galaxy.slug,

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Head from "next/head";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { getAllSuperClusters } from "../adapters/superclusters";
 
 const ThemeChanger = () => {
   const [mounted, setMounted] = useState(false);
@@ -123,8 +124,9 @@ Home.defaultProps = {
 };
 
 export const getStaticProps = async () => {
-  const res = await fetch("https://clustercms.herokuapp.com/superclusters");
-  const superclusters = await res.json();
+  const superclusters = await getAllSuperClusters()
+    .then((data) => data)
+    .catch((err) => err);
   return {
     props: { superclusters },
   };
