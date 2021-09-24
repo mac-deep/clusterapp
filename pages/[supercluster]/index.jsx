@@ -58,12 +58,13 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const superclusters = await getAllSuperClusters()
-    .then((data) => data)
+  const paths = await getAllSuperClusters()
+    .then((data) =>
+      data.map((supercluster) => ({
+        params: { supercluster: supercluster.slug },
+      }))
+    )
     .catch((err) => err);
-  const paths = superclusters.map((supercluster) => ({
-    params: { supercluster: supercluster.slug },
-  }));
   return {
     paths,
     fallback: false,

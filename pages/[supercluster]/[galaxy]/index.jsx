@@ -64,12 +64,14 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const galaxies = await getAllGalaxies()
-    .then((data) => data)
+  const paths = await getAllGalaxies()
+    .then((data) =>
+      data.map((galaxy) => ({
+        params: { galaxy: galaxy.slug, supercluster: galaxy.supercluster.slug },
+      }))
+    )
     .catch((err) => err);
-  const paths = galaxies.map((galaxy) => ({
-    params: { galaxy: galaxy.slug, supercluster: galaxy.supercluster.slug },
-  }));
+
   return {
     paths,
     fallback: false,
