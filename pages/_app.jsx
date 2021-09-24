@@ -11,6 +11,7 @@ const EmptyLayout = ({ children }) => <>{children}</>;
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
+
 function MyApp({ Component, pageProps }) {
   const PageLayout = Component.PageLayout || EmptyLayout;
 
@@ -24,21 +25,21 @@ function MyApp({ Component, pageProps }) {
 }
 
 MyApp.propTypes = {
-  Component: PropTypes.node,
-  pageProps: PropTypes.node,
+  Component: PropTypes.objectOf(PropTypes.node),
+  pageProps: PropTypes.objectOf(PropTypes.node),
 };
 
 MyApp.defaultProps = {
-  Component: PropTypes.node,
-  pageProps: PropTypes.node,
+  Component: {},
+  pageProps: {},
 };
 
 EmptyLayout.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.objectOf(PropTypes.node),
 };
 
 EmptyLayout.defaultProps = {
-  children: PropTypes.node,
+  children: {},
 };
 
 export default MyApp;

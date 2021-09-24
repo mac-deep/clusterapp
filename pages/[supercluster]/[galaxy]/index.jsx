@@ -1,15 +1,14 @@
 import React from "react";
 import Head from "next/head";
 import PropTypes from "prop-types";
-import ClusterCard from "../../../components/ClusterCard";
+import ClusterCard from "../../../components/SuperCluster/ClusterCard";
 import Title from "../../../components/Title";
-import { getAllGalaxies } from "../../../adapters/galaxies";
-import { getAllClustersOf } from "../../../adapters/clusters";
+import { getAllClustersOf, getAllGalaxies } from "../../../adapters";
 
 const Galaxy = ({ clusters, supercluster, galaxy }) => (
-  <div className="min-h-screen bg-gray-100 dark:bg-black">
+  <div className="min-h-screen bg-gray-100 dark:bg-dark">
     <Head>
-      <title>{galaxy}</title>
+      <title>{galaxy} | CLUSTER</title>
     </Head>
     <Title title={galaxy} />
     <div className="w-full flex justify-center ">
@@ -64,12 +63,14 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const galaxies = await getAllGalaxies()
-    .then((data) => data)
+  const paths = await getAllGalaxies()
+    .then((data) =>
+      data.map((galaxy) => ({
+        params: { galaxy: galaxy.slug, supercluster: galaxy.supercluster.slug },
+      }))
+    )
     .catch((err) => err);
-  const paths = galaxies.map((galaxy) => ({
-    params: { galaxy: galaxy.slug, supercluster: galaxy.supercluster.slug },
-  }));
+
   return {
     paths,
     fallback: false,

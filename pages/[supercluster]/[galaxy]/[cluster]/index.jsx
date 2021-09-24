@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Course from "../../../../layouts/Course";
+import ClusterLayout from "../../../../layouts/ClusterLayout";
 import { getACluster, getAllClusters } from "../../../../adapters/clusters";
 
 const Cluster = ({ cluster }) => <div>Cluster of {cluster.title}</div>;
 
-Cluster.PageLayout = Course;
+Cluster.PageLayout = ClusterLayout;
 
 Cluster.propTypes = {
   cluster: PropTypes.string,
@@ -28,16 +28,17 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const clusters = await getAllClusters()
-    .then((data) => data)
+  const paths = await getAllClusters()
+    .then((data) =>
+      data.map((cluster) => ({
+        params: {
+          cluster: cluster.slug,
+          galaxy: cluster.galaxy.slug,
+          supercluster: cluster.supercluster.slug,
+        },
+      }))
+    )
     .catch((err) => err);
-  const paths = clusters.map((cluster) => ({
-    params: {
-      cluster: cluster.slug,
-      galaxy: cluster.galaxy.slug,
-      supercluster: cluster.supercluster.slug,
-    },
-  }));
   return {
     paths,
     fallback: false,

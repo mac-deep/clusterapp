@@ -2,9 +2,11 @@ import React from "react";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import { useRouter } from "next/router";
-import Course from "../../../../layouts/Course";
-import YoutubeVideo from "../../../../components/subject/YoutubeVideo";
-import Quote from "../../../../components/subject/Quote";
+import ClusterLayout from "../../../../layouts/ClusterLayout";
+import YoutubeVideo from "../../../../components/YoutubeVideo";
+import Quote from "../../../../components/Quote";
+import { getAllClusters } from "../../../../adapters/clusters";
+import { getAStar } from "../../../../adapters/stars";
 
 function Star({ star }) {
   const router = useRouter();
@@ -20,7 +22,9 @@ function Star({ star }) {
   return (
     <>
       <Head>
-        <title>{star.title}</title>
+        <title>
+          {star.title} - {router.query.cluster} | CLUSTER
+        </title>
       </Head>
       <div className="flex flex-col lg:flex-row">
         <div className=" w-full lg:w-9/12">
@@ -61,25 +65,25 @@ Star.defaultProps = {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const res = await fetch(
-    `https://clustercms.herokuapp.com/stars/${params.star}`
-  );
-  const star = await res.json();
+  const star = await getAStar(params.star)
+    .then((data) => data)
+    .catch((err) => err);
   return {
     props: { star },
   };
 };
 
 export const getStaticPaths = async () => {
-  const res = await fetch(`https://clustercms.herokuapp.com/clusters`);
-  const data = await res.json();
-  const path = data.map((cluster) =>
+  const clusters = await getAllClusters()
+    .then((data) => data)
+    .catch((err) => err);
+  const path = clusters.map((cluster) =>
     cluster.stars.flat().map((star) => ({
       params: {
         supercluster: cluster.supercluster.slug,
         galaxy: cluster.galaxy.slug,
         cluster: cluster.slug,
-        star: star.slug,
+        star: star.videoURL,
       },
     }))
   );
@@ -91,6 +95,6 @@ export const getStaticPaths = async () => {
   };
 };
 
-Star.PageLayout = Course;
+Star.PageLayout = ClusterLayout;
 
 export default Star;
