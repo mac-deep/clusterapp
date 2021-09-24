@@ -3,8 +3,7 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import ClusterCard from "../../../components/SuperCluster/ClusterCard";
 import Title from "../../../components/Title";
-import { getAllGalaxies } from "../../../adapters/galaxies";
-import { getAllClustersOf } from "../../../adapters/clusters";
+import { getAllClustersOf, getAllGalaxies } from "../../../adapters";
 
 const Galaxy = ({ clusters, supercluster, galaxy }) => (
   <div className="min-h-screen bg-gray-100 dark:bg-dark">
