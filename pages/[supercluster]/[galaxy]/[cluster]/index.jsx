@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Course from "../../../../layouts/Course";
+import ClusterLayout from "../../../../layouts/ClusterLayout";
 import { getACluster, getAllClusters } from "../../../../adapters/clusters";
 
 const Cluster = ({ cluster }) => <div>Cluster of {cluster.title}</div>;
 
-Cluster.PageLayout = Course;
+Cluster.PageLayout = ClusterLayout;
 
 Cluster.propTypes = {
   cluster: PropTypes.string,

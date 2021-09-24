@@ -1,13 +1,13 @@
 import React from "react";
 import Head from "next/head";
 import PropTypes from "prop-types";
-import ClusterCard from "../../../components/ClusterCard";
+import ClusterCard from "../../../components/SuperCluster/ClusterCard";
 import Title from "../../../components/Title";
 import { getAllGalaxies } from "../../../adapters/galaxies";
 import { getAllClustersOf } from "../../../adapters/clusters";
 
 const Galaxy = ({ clusters, supercluster, galaxy }) => (
-  <div className="min-h-screen bg-gray-100 dark:bg-black">
+  <div className="min-h-screen bg-gray-100 dark:bg-dark">
     <Head>
       <title>{galaxy}</title>
     </Head>

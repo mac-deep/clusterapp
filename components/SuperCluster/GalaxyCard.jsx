@@ -5,7 +5,7 @@ import Link from "next/link";
 const GalaxyCard = ({ title, link, summary }) => (
   <div className="sm:w-1/2 xl:w-1/3 flex flex-col justify-start p-4">
     <Link href={link} passHref>
-      <div className="p-4 shadow-md hover:shadow-xl rounded-lg bg-white border-1 dark:hover:border-gray-200 dark:border-gray-800 h-full cursor-pointer">
+      <div className="p-4 shadow-xl rounded-lg  border-1  dark:hover:light-shadow-lg dark:border-gray-800 h-full cursor-pointer">
         <div className="flex justify-center mb-3 items-center">
           <span className="text-5xl font-medium">{title}</span>
         </div>

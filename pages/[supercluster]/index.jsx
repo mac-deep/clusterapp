@@ -1,12 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import GalaxyCard from "../../components/GalaxyCard";
+import GalaxyCard from "../../components/SuperCluster/GalaxyCard";
 import Title from "../../components/Title";
-import { getAllGalaxiesOf } from "../../adapters/galaxies";
-import { getAllSuperClusters } from "../../adapters/superclusters";
+import { getAllSuperClusters, getAllGalaxiesOf } from "../../adapters";
 
 const Supercluster = ({ galaxies, supercluster }) => (
-  <div className="dark:bg-black bg-gray-100 min-h-screen">
+  <div className="dark:bg-dark bg-gray-100 min-h-screen">
     <Title title={supercluster} />
     <div className="w-full flex justify-center">
       <div className="flex sm:full w-10/12 flex-wrap">
