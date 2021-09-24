@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Head from "next/head";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,7 +7,7 @@ import { getAStar } from "../adapters/stars";
 import { getARocket } from "../adapters/rockets";
 import Loading from "../components/Loading";
 
-const Course = ({ children }) => {
+const RocketLayout = ({ children }) => {
   const router = useRouter();
   const rocketId = router.query.rocket;
   const starId = router.query.star;
@@ -20,24 +21,26 @@ const Course = ({ children }) => {
       getARocket(rocketId)
         .then((data) => setRocket(data))
         .catch((err) => err),
-    getAStar(starId)
-      .then((data) => setTitle(data.title))
-      .catch((err) => err),
-    [starId]
+    []
   );
+  useEffect(async () => {
+    if (starId) {
+      getAStar(starId)
+        .then((data) => setTitle(data.title))
+        .catch((err) => err);
+    }
+  }, [starId]);
 
   const ListItem = ({ name, slug }) => (
     <Link href={`/rockets/${rocketId}/${slug}`} passHref>
-      <a>
-        <li
-          className={`cursor-pointer p-4 border-l-4 text-2xl font-normal ease-in border-transparent text-gray-600 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-900 dark:hover:bg-opacity-50 ${
-            router.query.star === slug &&
-            "bg-blue-50 border-l-4 border-blue-400 font-bold  text-gray-900 dark:bg-gray-900 dark:bg-opacity-70"
-          }`}
-        >
-          {name}
-        </li>
-      </a>
+      <li
+        className={`${
+          router.query.star === slug &&
+          "bg-blue-50 border-l-4 border-blue-400 font-bold text-gray-800 dark:text-gray-200 dark:bg-gray-900 dark:bg-opacity-70"
+        } cursor-pointer p-4 border-l-4 text-2xl font-normal ease-in border-transparent text-gray-500  hover:bg-blue-50 dark:hover:bg-gray-900 dark:hover:bg-opacity-50 `}
+      >
+        {name}
+      </li>
     </Link>
   );
 
@@ -53,6 +56,9 @@ const Course = ({ children }) => {
 
   return (
     <div className="relative dark:bg-black bg-gray-100">
+      <Head>
+        <title>{rocket?.title} | CLUSTER</title>
+      </Head>
       <div
         style={{ lineHeight: "4rem" }}
         className="p-4 h-24 w-full bg-white dark:bg-gray-900 shadow-lg z-50 fixed text-5xl flex justify-between items-center"
@@ -128,7 +134,7 @@ const Course = ({ children }) => {
               {rocket.stars?.map((star) => (
                 <ListItem
                   name={star.title}
-                  key={star.slug}
+                  key={star.id}
                   slug={star.videoURL}
                 />
               ))}
@@ -148,12 +154,12 @@ const Course = ({ children }) => {
   );
 };
 
-Course.propTypes = {
+RocketLayout.propTypes = {
   children: PropTypes.objectOf(PropTypes.any),
 };
 
-Course.defaultProps = {
+RocketLayout.defaultProps = {
   children: {},
 };
 
-export default Course;
+export default RocketLayout;

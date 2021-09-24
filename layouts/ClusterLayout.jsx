@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { getAStar, getACluster } from "../adapters";
 import Loading from "../components/Loading";
 
-const Course = ({ children }) => {
+const ClusterLayout = ({ children }) => {
   const router = useRouter();
   const superclusterId = router.query.supercluster;
   const galaxyId = router.query.galaxy;
@@ -53,6 +54,9 @@ const Course = ({ children }) => {
 
   return (
     <div className="relative dark:bg-black bg-gray-100">
+      <Head>
+        <title>{cluster?.title} | CLUSTER</title>
+      </Head>
       <div
         style={{ lineHeight: "4rem" }}
         className="p-4 h-24 w-full bg-white dark:bg-gray-900 shadow-lg z-50 fixed text-5xl flex justify-between items-center"
@@ -128,7 +132,7 @@ const Course = ({ children }) => {
               {cluster.stars?.map((star) => (
                 <ListItem
                   name={star.title}
-                  key={star.slug}
+                  key={star.id}
                   slug={star.videoURL}
                 />
               ))}
@@ -148,12 +152,12 @@ const Course = ({ children }) => {
   );
 };
 
-Course.propTypes = {
+ClusterLayout.propTypes = {
   children: PropTypes.objectOf(PropTypes.any),
 };
 
-Course.defaultProps = {
+ClusterLayout.defaultProps = {
   children: {},
 };
 
-export default Course;
+export default ClusterLayout;

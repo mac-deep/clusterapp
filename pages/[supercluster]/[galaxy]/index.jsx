@@ -9,7 +9,7 @@ import { getAllClustersOf } from "../../../adapters/clusters";
 const Galaxy = ({ clusters, supercluster, galaxy }) => (
   <div className="min-h-screen bg-gray-100 dark:bg-dark">
     <Head>
-      <title>{galaxy}</title>
+      <title>{galaxy} | CLUSTER</title>
     </Head>
     <Title title={galaxy} />
     <div className="w-full flex justify-center ">

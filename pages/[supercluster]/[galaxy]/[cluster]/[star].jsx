@@ -22,7 +22,9 @@ function Star({ star }) {
   return (
     <>
       <Head>
-        <title>{star.title}</title>
+        <title>
+          {star.title} - {router.query.cluster} | CLUSTER
+        </title>
       </Head>
       <div className="flex flex-col lg:flex-row">
         <div className=" w-full lg:w-9/12">
