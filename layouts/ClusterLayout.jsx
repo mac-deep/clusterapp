@@ -3,7 +3,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import { getAStar, getACluster } from "../adapters";
+import { useACluster } from "../adapters";
 import Loading from "../components/Loading";
 
 const ClusterLayout = ({ children }) => {
@@ -11,23 +11,16 @@ const ClusterLayout = ({ children }) => {
   const superclusterId = router.query.supercluster;
   const galaxyId = router.query.galaxy;
   const clusterId = router.query.cluster;
-  const starId = router.query.star;
-
-  const [cluster, setCluster] = useState(null);
-  const [title, setTitle] = useState("");
   const [starbar, setStarbar] = useState(false);
+  const { cluster, isLoading, isError } = useACluster(clusterId);
 
-  useEffect(
-    async () =>
-      getACluster(clusterId)
-        .then((data) => setCluster(data))
-        .catch((err) => err),
-
-    getAStar(starId)
-      .then((data) => setTitle(data.title))
-      .catch((err) => err),
-    [starId]
-  );
+  if (isError) return "An error has occurred.";
+  if (isLoading)
+    return (
+      <div className="min-h-screen flex justify-center items-center w-full bg-white dark:bg-dark">
+        <Loading />
+      </div>
+    );
 
   const ListItem = ({ name, slug }) => (
     <Link href={`/${superclusterId}/${galaxyId}/${clusterId}/${slug}`} passHref>
@@ -70,13 +63,13 @@ const ClusterLayout = ({ children }) => {
           <span className="font-normal text-black dark:text-white">
             &#47;&nbsp;
           </span>
-          {title && (
+          {cluster.title && (
             <span className="font-normal text-black dark:text-white">
-              {title}
+              {cluster.title}
             </span>
           )}
         </div>
-        <div className="h-16 hidden pr-4 lg:flex items-center text-gray-400 border-gray-300 dark:border-gray-700 border-1 rounded-2xl">
+        {/* <div className="h-16 hidden pr-4 lg:flex items-center text-gray-400 border-gray-300 dark:border-gray-700 border-1 rounded-2xl">
           <div className="w-16 h-16 flex justify-center items-center ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +90,7 @@ const ClusterLayout = ({ children }) => {
             placeholder={`Search in ${cluster?.title}`}
             className="bg-transparent text-2xl w-full outline-none py-2 "
           />
-        </div>
+        </div> */}
         <div className="flex items-center pl-2 sm:hidden">
           <button
             type="button"

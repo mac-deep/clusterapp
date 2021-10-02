@@ -26,6 +26,7 @@ function Star({ star }) {
           {star.title} - {router.query.cluster} | CLUSTER
         </title>
       </Head>
+      <div className="w-full text-7xl mb-12">🔸{star.title}</div>
       <div className="flex flex-col lg:flex-row">
         <div className=" w-full lg:w-9/12">
           {star.videoURL && (
