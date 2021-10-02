@@ -18,26 +18,29 @@ function Star({ star }) {
     );
   }
   return (
-    <div className="flex flex-col lg:flex-row">
-      <div className=" w-full lg:w-9/12">
-        {star.videoURL && (
-          <section className="mb-12">
-            <YoutubeVideo id={star.videoURL} />
-          </section>
-        )}
-        {star.note && (
-          <section className="mb-12">
-            <Quote text={star.note} />
-          </section>
-        )}
-      </div>
-      <div className="w-full lg:w-1/4">
-        <div className="shadow-md border-l-2 bg-white dark:bg-gray-900 lg:ml-12 p-4 flex-1 h-40 rounded-2xl ">
-          <h3 className="font-medium mb-2">📝Note</h3>
-          <p className="text-xl font-light">Here you can give a tip</p>
+    <>
+      <div className="w-full text-7xl mb-12">🔸{star.title}</div>
+      <div className="flex flex-col lg:flex-row">
+        <div className=" w-full lg:w-9/12">
+          {star.videoURL && (
+            <section className="mb-12">
+              <YoutubeVideo id={star.videoURL} />
+            </section>
+          )}
+          {star.note && (
+            <section className="mb-12">
+              <Quote text={star.note} />
+            </section>
+          )}
+        </div>
+        <div className="w-full lg:w-1/4">
+          <div className="shadow-md border-l-2 bg-white dark:bg-gray-900 lg:ml-12 p-4 flex-1 h-40 rounded-2xl ">
+            <h3 className="font-medium mb-2">📝Note</h3>
+            <p className="text-xl font-light">Here you can give a tip</p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
