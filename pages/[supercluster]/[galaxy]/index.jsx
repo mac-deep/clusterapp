@@ -3,7 +3,7 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import ClusterCard from "../../../components/SuperCluster/ClusterCard";
 import Title from "../../../components/Title";
-import { getAllClustersOf, getAllGalaxies } from "../../../adapters";
+import { getAllClustersOf } from "../../../adapters";
 
 const Galaxy = ({ clusters, supercluster, galaxy }) => (
   <div className="min-h-screen bg-gray-100 dark:bg-dark">
@@ -51,7 +51,7 @@ Galaxy.defaultProps = {
   galaxy: "Galaxy",
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   const clusters = await getAllClustersOf(params.galaxy);
   return {
     props: {
@@ -62,19 +62,19 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-export const getStaticPaths = async () => {
-  const paths = await getAllGalaxies()
-    .then((data) =>
-      data.map((galaxy) => ({
-        params: { galaxy: galaxy.slug, supercluster: galaxy.supercluster.slug },
-      }))
-    )
-    .catch((err) => err);
+// export const getStaticPaths = async () => {
+//   const paths = await getAllGalaxies()
+//     .then((data) =>
+//       data.map((galaxy) => ({
+//         params: { galaxy: galaxy.slug, supercluster: galaxy.supercluster.slug },
+//       }))
+//     )
+//     .catch((err) => err);
 
-  return {
-    paths,
-    fallback: false,
-  };
-};
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// };
 
 export default Galaxy;

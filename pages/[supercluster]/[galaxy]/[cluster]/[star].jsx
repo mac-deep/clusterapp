@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import ClusterLayout from "../../../../layouts/ClusterLayout";
 import YoutubeVideo from "../../../../components/YoutubeVideo";
 import Quote from "../../../../components/Quote";
-import { getAllClusters } from "../../../../adapters/clusters";
 import { getAStar } from "../../../../adapters/stars";
 
 function Star({ star }) {
@@ -34,17 +33,13 @@ function Star({ star }) {
               <YoutubeVideo id={star.videoURL} />
             </section>
           )}
-          {star.note && (
-            <section className="mb-12">
-              <Quote text={star.note} />
-            </section>
-          )}
         </div>
         <div className="w-full lg:w-1/4">
-          <div className="shadow-md border-l-2 bg-white dark:bg-gray-900 lg:ml-12 p-4 flex-1 h-40 rounded-2xl ">
-            <h3 className="font-medium mb-2">📝Note</h3>
-            <p className="text-xl font-light">Here you can give a tip</p>
-          </div>
+          {star.note && (
+            <div className="lg:ml-12 flex-1">
+              <Quote text={star.note} />
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -65,7 +60,7 @@ Star.defaultProps = {
   star: {},
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   const star = await getAStar(params.star)
     .then((data) => data)
     .catch((err) => err);
@@ -74,27 +69,27 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-export const getStaticPaths = async () => {
-  const clusters = await getAllClusters()
-    .then((data) => data)
-    .catch((err) => err);
-  const path = clusters.map((cluster) =>
-    cluster.stars.flat().map((star) => ({
-      params: {
-        supercluster: cluster.supercluster.slug,
-        galaxy: cluster.galaxy.slug,
-        cluster: cluster.slug,
-        star: star.videoURL,
-      },
-    }))
-  );
+// export const getStaticPaths = async () => {
+//   const clusters = await getAllClusters()
+//     .then((data) => data)
+//     .catch((err) => err);
+//   const path = clusters.map((cluster) =>
+//     cluster.stars.flat().map((star) => ({
+//       params: {
+//         supercluster: cluster.supercluster.slug,
+//         galaxy: cluster.galaxy.slug,
+//         cluster: cluster.slug,
+//         star: star.videoURL,
+//       },
+//     }))
+//   );
 
-  const paths = path.flat();
-  return {
-    paths,
-    fallback: false,
-  };
-};
+//   const paths = path.flat();
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// };
 
 Star.PageLayout = ClusterLayout;
 

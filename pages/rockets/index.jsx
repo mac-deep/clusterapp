@@ -27,7 +27,7 @@ Rockets.defaultProps = {
   rockets: [],
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const rockets = await getAllRockets()
     .then((data) => data)
     .catch((err) => err);

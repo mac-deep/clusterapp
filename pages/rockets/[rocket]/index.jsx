@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import RocketLayout from "../../../layouts/RocketLayout";
-import { getAllRockets, getARocket } from "../../../adapters/rockets";
+import { getARocket } from "../../../adapters/rockets";
 
 function Rocket({ rocket }) {
   return <div>{rocket.title}</div>;
@@ -32,7 +32,7 @@ Rocket.defaultProps = {
 
 Rocket.PageLayout = RocketLayout;
 
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   const rocket = await getARocket(params.rocket)
     .then((data) => data)
     .catch((err) => err);
@@ -43,15 +43,15 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-export const getStaticPaths = async () => {
-  const rockets = await getAllRockets()
-    .then((data) => data)
-    .catch((err) => err);
-  const paths = rockets.map((rocket) => ({
-    params: { rocket: rocket.slug },
-  }));
-  return {
-    paths,
-    fallback: false,
-  };
-};
+// export const getStaticPaths = async () => {
+//   const rockets = await getAllRockets()
+//     .then((data) => data)
+//     .catch((err) => err);
+//   const paths = rockets.map((rocket) => ({
+//     params: { rocket: rocket.slug },
+//   }));
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// };

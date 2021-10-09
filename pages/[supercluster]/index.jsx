@@ -4,7 +4,7 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import GalaxyCard from "../../components/SuperCluster/GalaxyCard";
 import Title from "../../components/Title";
-import { getAllSuperClusters, getAllGalaxiesOf } from "../../adapters";
+import { getAllGalaxiesOf } from "../../adapters";
 
 const Supercluster = ({ galaxies, supercluster }) => (
   <div className="dark:bg-dark bg-gray-100 min-h-screen">
@@ -45,7 +45,7 @@ Supercluster.defaultProps = {
   supercluster: "supercluster",
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   const galaxies = await getAllGalaxiesOf(params.supercluster)
     .then((data) => data)
     .catch((err) => err);
@@ -57,18 +57,18 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-export const getStaticPaths = async () => {
-  const paths = await getAllSuperClusters()
-    .then((data) =>
-      data.map((supercluster) => ({
-        params: { supercluster: supercluster.slug },
-      }))
-    )
-    .catch((err) => err);
-  return {
-    paths,
-    fallback: false,
-  };
-};
+// export const getStaticPaths = async () => {
+//   const paths = await getAllSuperClusters()
+//     .then((data) =>
+//       data.map((supercluster) => ({
+//         params: { supercluster: supercluster.slug },
+//       }))
+//     )
+//     .catch((err) => err);
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// };
 
 export default Supercluster;

@@ -46,7 +46,7 @@ Home.defaultProps = {
   rockets: [],
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const superclusters = await getAllSuperClusters()
     .then((data) => data)
     .catch((err) => err);
