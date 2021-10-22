@@ -3,7 +3,7 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 
 const SuperClusterCard = ({ title, data }) => (
-  <div className="w-full lg:w-1/3 sm:w-1/2 border-gray-300">
+  <div className="w-full lg:w-1/3 sm:w-1/2 h-full">
     <div className="m-8 p-8 shadow-2xl dark:light-shadow-2xl transition-shadow rounded-3xl">
       <h1 className="text-6xl font-semibold mb-8 text-gray-800 dark:text-white">
         {title}

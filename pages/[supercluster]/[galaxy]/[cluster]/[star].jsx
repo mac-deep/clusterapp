@@ -25,7 +25,6 @@ function Star({ star }) {
           {star.title} - {router.query.cluster} | CLUSTER
         </title>
       </Head>
-      <div className="w-full text-7xl mb-12">🔸{star.title}</div>
       <div className="flex flex-col lg:flex-row">
         <div className=" w-full lg:w-9/12">
           {star.videoURL && (
@@ -68,28 +67,6 @@ export const getServerSideProps = async ({ params }) => {
     props: { star },
   };
 };
-
-// export const getStaticPaths = async () => {
-//   const clusters = await getAllClusters()
-//     .then((data) => data)
-//     .catch((err) => err);
-//   const path = clusters.map((cluster) =>
-//     cluster.stars.flat().map((star) => ({
-//       params: {
-//         supercluster: cluster.supercluster.slug,
-//         galaxy: cluster.galaxy.slug,
-//         cluster: cluster.slug,
-//         star: star.videoURL,
-//       },
-//     }))
-//   );
-
-//   const paths = path.flat();
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
 
 Star.PageLayout = ClusterLayout;
 

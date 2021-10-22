@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Title = ({ title }) => (
-  <h1 className="font-bold w-full text-6xl text-center py-8">{title}</h1>
+  <h1 className="font-bold w-full dark:text-white text-6xl text-center py-8">
+    {title}
+  </h1>
 );
 
 Title.propTypes = {

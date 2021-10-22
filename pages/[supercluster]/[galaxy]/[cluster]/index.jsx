@@ -27,22 +27,4 @@ export const getServerSideProps = async ({ params }) => {
   };
 };
 
-// export const getStaticPaths = async () => {
-//   const paths = await getAllClusters()
-//     .then((data) =>
-//       data.map((cluster) => ({
-//         params: {
-//           cluster: cluster.slug,
-//           galaxy: cluster.galaxy.slug,
-//           supercluster: cluster.supercluster.slug,
-//         },
-//       }))
-//     )
-//     .catch((err) => err);
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
-
 export default Cluster;
