@@ -5,13 +5,13 @@ import ClusterCard from "../../../components/SuperCluster/ClusterCard";
 import Title from "../../../components/Title";
 import { getAllClustersOf } from "../../../adapters";
 
-const Galaxy = ({ clusters, supercluster, galaxy }) => (
-  <div className="min-h-screen bg-gray-100 dark:bg-dark">
+const Galaxy = ({ clusters, supercluster, galaxy, galaxyTitle }) => (
+  <div className="min-h-screen bg-gray-100 dark:bg-dark bg-fixed">
     <Head>
-      <title>{galaxy} | CLUSTER</title>
+      <title>{galaxyTitle} | CLUSTER</title>
     </Head>
-    <Title title={galaxy} />
-    <div className="w-full flex justify-center ">
+    <Title title={galaxyTitle} />
+    <div className="w-full flex justify-center">
       <div className="flex sm:full w-10/12 flex-wrap">
         {clusters.length !== 0 ? (
           clusters.map((cluster) => (
@@ -28,7 +28,7 @@ const Galaxy = ({ clusters, supercluster, galaxy }) => (
             />
           ))
         ) : (
-          <h1>No clusters found for {galaxy} galaxy!</h1>
+          <h1>No clusters found for {galaxyTitle} galaxy!</h1>
         )}
       </div>
     </div>
@@ -43,12 +43,14 @@ Galaxy.propTypes = {
   ),
   supercluster: PropTypes.string,
   galaxy: PropTypes.string,
+  galaxyTitle: PropTypes.string,
 };
 
 Galaxy.defaultProps = {
   clusters: [],
   supercluster: "SuperCluster",
   galaxy: "Galaxy",
+  galaxyTitle: "GalaxyTitle",
 };
 
 export const getServerSideProps = async ({ params }) => {
@@ -57,24 +59,10 @@ export const getServerSideProps = async ({ params }) => {
     props: {
       supercluster: params.supercluster,
       galaxy: params.galaxy,
+      galaxyTitle: clusters[0].galaxy.title,
       clusters,
     },
   };
 };
-
-// export const getStaticPaths = async () => {
-//   const paths = await getAllGalaxies()
-//     .then((data) =>
-//       data.map((galaxy) => ({
-//         params: { galaxy: galaxy.slug, supercluster: galaxy.supercluster.slug },
-//       }))
-//     )
-//     .catch((err) => err);
-
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
 
 export default Galaxy;

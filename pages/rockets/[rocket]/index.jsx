@@ -42,16 +42,3 @@ export const getServerSideProps = async ({ params }) => {
     },
   };
 };
-
-// export const getStaticPaths = async () => {
-//   const rockets = await getAllRockets()
-//     .then((data) => data)
-//     .catch((err) => err);
-//   const paths = rockets.map((rocket) => ({
-//     params: { rocket: rocket.slug },
-//   }));
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };

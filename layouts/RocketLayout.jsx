@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import Head from "next/head";
+import { MenuIcon } from "@heroicons/react/solid";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useARocket } from "../adapters";
 import Loading from "../components/Loading";
+import { RocketContext } from "../context/RocketContext";
+import { ThemeProvider } from "next-themes";
 
 const RocketLayout = ({ children }) => {
   const router = useRouter();
   const rocketId = router.query.rocket;
+  const starId = router.query.star;
   const [starbar, setStarbar] = useState(false);
-
   const { rocket, isLoading, isError } = useARocket(rocketId);
   if (isError) return "An error has occurred.";
   if (isLoading)
@@ -45,91 +48,62 @@ const RocketLayout = ({ children }) => {
   };
 
   return (
-    <div className="relative dark:bg-black bg-gray-100">
-      <Head>
-        <title>{rocket?.title} | CLUSTER</title>
-      </Head>
-      <div
-        style={{ lineHeight: "4rem" }}
-        className="p-4 h-24 w-full bg-white dark:bg-gray-900 shadow-lg z-50 fixed text-5xl flex justify-between items-center"
-      >
-        <div className="truncate flex">
-          <Link href={`/rockets/${rocketId}`} passHref>
-            <span className="font-bold hidden lg:block uppercase text-blue-700 dark:text-blue-400 cursor-pointer">
-              {rocketId}&nbsp;
-            </span>
-          </Link>
-          <span className="font-normal text-black dark:text-white">
-            &#47;&nbsp;
-          </span>
-
-          {/* <span className="font-normal text-black dark:text-white">
-            {rocket.title}
-          </span> */}
-        </div>
-        {/* <div className="h-16 hidden pr-4 lg:flex items-center text-gray-400 border-gray-300 dark:border-gray-700 border-1 rounded-2xl">
-          <div className="w-16 h-16 flex justify-center items-center ">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-          <input
-            placeholder={`Search in ${rocket?.title}`}
-            className="bg-transparent text-2xl w-full outline-none py-2 "
-          />
-        </div> */}
-        <div className="flex items-center pl-2 sm:hidden">
-          <button
-            type="button"
-            onClick={() => setStarbar(!starbar)}
-            onKeyPress={() => setStarbar(!starbar)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div className="pt-24">
-        <aside
-          className={` ${
-            starbar ? "-translate-x-0 " : "-translate-x-full"
-          } transform transition w-11/12 backdrop-filter duration-300 ease-in-out sm:translate-x-0 z-40 sm:block sm:w-80 bg-gray-50 dark:bg-dark h-screen fixed dark:light-shadow-xl shadow-xl`}
+    <RocketContext.Provider value={{ rocket }}>
+      <div className="relative dark:bg-dark bg-gray-100 min-h-screen">
+        <Head>
+          <title>{rocket?.title} | CLUSTER</title>
+        </Head>
+        <div
+          style={{ lineHeight: "4rem" }}
+          className=" fixed p-4 h-24 w-full bg-white dark:bg-gray-900 shadow-lg z-50  text-5xl flex justify-between items-center"
         >
-          <ul className="overflow-y-scroll h-full pb-8">
-            {rocket.stars?.map((star) => (
-              <ListItem name={star.title} key={star.id} slug={star.videoURL} />
-            ))}
-          </ul>
-        </aside>
+          <div className="truncate flex">
+            <Link href={`/rockets/${rocketId}`} passHref>
+              <span className="font-bold hidden lg:block uppercase text-blue-700 dark:text-blue-400 cursor-pointer">
+                {rocket.title}&nbsp;
+              </span>
+            </Link>
+            <span className="font-normal text-black dark:text-white">
+              &#47;&nbsp;
+            </span>
 
-        <main className="z-0 sm:ml-80 min-h-screen bg-gray-100 p-12 dark:bg-dark">
-          {children}
-        </main>
+            <span className="font-normal text-black dark:text-white">
+              {starId &&
+                rocket.stars.filter((star) => star.videoURL === starId)[0]
+                  .title}
+            </span>
+          </div>
+          <div className="flex items-center dark:text-white px-4 sm:hidden">
+            <button
+              type="button"
+              onClick={() => setStarbar(!starbar)}
+              onKeyPress={() => setStarbar(!starbar)}
+            >
+              <MenuIcon className="w-12 h-12" />
+            </button>
+          </div>
+        </div>
+        <div className="pt-24">
+          <aside
+            className={` ${
+              starbar ? "-translate-x-0 " : "-translate-x-full"
+            } transform transition w-11/12 backdrop-filter duration-300 ease-in-out sm:translate-x-0 z-40 sm:block sm:w-80 bg-gray-50 dark:bg-dark h-screen fixed dark:light-shadow-xl shadow-xl`}
+          >
+            <ul className="overflow-y-auto h-full pb-8">
+              {rocket.stars?.map((star) => (
+                <ListItem
+                  name={star.title}
+                  key={star.id}
+                  slug={star.videoURL}
+                />
+              ))}
+            </ul>
+          </aside>
+
+          <main className="z-0 sm:ml-80 p-12">{children}</main>
+        </div>
       </div>
-    </div>
+    </RocketContext.Provider>
   );
 };
 

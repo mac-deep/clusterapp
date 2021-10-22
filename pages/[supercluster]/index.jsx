@@ -1,17 +1,16 @@
 import React from "react";
 import Head from "next/head";
-
 import PropTypes from "prop-types";
 import GalaxyCard from "../../components/SuperCluster/GalaxyCard";
 import Title from "../../components/Title";
 import { getAllGalaxiesOf } from "../../adapters";
 
-const Supercluster = ({ galaxies, supercluster }) => (
-  <div className="dark:bg-dark bg-gray-100 min-h-screen">
+const Supercluster = ({ galaxies, supercluster, superclusterTitle }) => (
+  <div className="dark:bg-dark bg-gray-100 min-h-screen bg-fixed">
     <Head>
-      <title>{supercluster} | CLUSTER</title>
+      <title>{superclusterTitle} | CLUSTER</title>
     </Head>
-    <Title title={supercluster} />
+    <Title title={superclusterTitle} />
     <div className="w-full flex justify-center">
       <div className="flex sm:full w-10/12 flex-wrap">
         {galaxies.length !== 0 ? (
@@ -24,7 +23,7 @@ const Supercluster = ({ galaxies, supercluster }) => (
             />
           ))
         ) : (
-          <h1>No galaxies found for {supercluster} supercluster</h1>
+          <h1>No galaxies found for {superclusterTitle} supercluster</h1>
         )}
       </div>
     </div>
@@ -38,11 +37,13 @@ Supercluster.propTypes = {
     })
   ),
   supercluster: PropTypes.string,
+  superclusterTitle: PropTypes.string,
 };
 
 Supercluster.defaultProps = {
   galaxies: [],
   supercluster: "supercluster",
+  superclusterTitle: "supercluster",
 };
 
 export const getServerSideProps = async ({ params }) => {
@@ -52,23 +53,10 @@ export const getServerSideProps = async ({ params }) => {
   return {
     props: {
       galaxies,
+      superclusterTitle: galaxies[0].supercluster.title,
       supercluster: params.supercluster,
     },
   };
 };
-
-// export const getStaticPaths = async () => {
-//   const paths = await getAllSuperClusters()
-//     .then((data) =>
-//       data.map((supercluster) => ({
-//         params: { supercluster: supercluster.slug },
-//       }))
-//     )
-//     .catch((err) => err);
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
 
 export default Supercluster;
