@@ -43,12 +43,14 @@ Galaxy.propTypes = {
   ),
   supercluster: PropTypes.string,
   galaxy: PropTypes.string,
+  galaxyTitle: PropTypes.string,
 };
 
 Galaxy.defaultProps = {
   clusters: [],
   supercluster: "SuperCluster",
   galaxy: "Galaxy",
+  galaxyTitle: "GalaxyTitle",
 };
 
 export const getServerSideProps = async ({ params }) => {
