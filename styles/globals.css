@@ -3,12 +3,20 @@
 @tailwind utilities;
 
 @layer utilities {
-  .border-1 {
-    border-width: 1px;
+  .hide-scrollbar {
+    /* display: none; */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  @variants responsive {
+    .ml-1\/4 {
+      margin-left: 25%;
+    }
   }
   @variants dark, focus, hover {
     .bg-dark {
-      background-image: linear-gradient(to bottom, #000, rgba(17, 24, 39, 1));
+      /* background-image: linear-gradient(to bottom, #111827, #334155); */
+      background-image: linear-gradient(to top, #111827, black);
     }
     .light-shadow {
       box-shadow: 0 1px 3px 0 rgba(255, 255, 255, 0.1),
@@ -35,7 +43,11 @@
   }
 }
 
-@layer base {
+body {
+  min-height: 100vh;
+}
+
+/* @layer base {
   h1 {
     @apply text-6xl;
   }
@@ -54,7 +66,7 @@
   h6 {
     @apply text-xl;
   }
-}
+} */
 
 html,
 body {
@@ -62,15 +74,12 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  scroll-behavior: smooth;
 }
 
 input:checked ~ .dot {
   transform: translateX(100%);
   background-color: #48bb78;
-}
-
-::-webkit-scrollbar {
-  display: none;
 }
 
 a {
@@ -103,6 +112,6 @@ a {
 
 @media (max-width: 650px) {
   html {
-    font-size: 50%;
+    font-size: 67%;
   }
 }
