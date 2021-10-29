@@ -43,7 +43,7 @@ Home.defaultProps = {
 
 export const getServerSideProps = async () => {
   const clusters = await getAllClusters()
-    .then((data) => data.slice(0, 6))
+    .then((data) => data)
     .catch((err) => err);
   const rockets = await getAllRockets()
     .then((data) => data)

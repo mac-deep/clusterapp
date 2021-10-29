@@ -10,8 +10,13 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.4",
+    "@mdx-js/loader": "^1.6.22",
+    "@next/mdx": "^12.0.1",
     "axios": "^0.21.4",
+    "date-fns": "^2.25.0",
+    "gray-matter": "^4.0.3",
     "next": "11.1.2",
+    "next-mdx-remote": "^3.0.7",
     "next-themes": "0.0.15",
     "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
@@ -19,6 +24,7 @@
     "react-dom": "17.0.2",
     "react-markdown": "^7.0.1",
     "react-twitter-embed": "^3.0.3",
+    "reading-time": "^1.5.0",
     "swr": "^1.0.1"
   },
   "devDependencies": {

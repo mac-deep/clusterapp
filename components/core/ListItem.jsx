@@ -9,7 +9,7 @@ const ListItem = ({ name, type, link, active }) => (
       <div className="flex h-full px-8 py-6 font-bold  dark:text-gray-200 hover:bg-blue-800 dark:hover:bg-blueGray-800">
         <div className="mr-4 relative z-40">
           {active ? (
-            <ChevronRightIcon className="w-8 h-8 rounded-full text-blue-900 bg-yellow-400 p-1" />
+            <ChevronRightIcon className="w-8 h-8 rounded-full text-white dark:text-black bg-blue-500 p-1" />
           ) : (
             <div className="w-8 h-8 rounded-full text-white border border-dashed border-white bg-blue-900 dark:bg-blueGray-900" />
           )}
@@ -23,7 +23,7 @@ const ListItem = ({ name, type, link, active }) => (
         </span>
       </div>
       <div
-        className={`absolute z-30 border-l border-dashed ml-12 border-white ${
+        className={`absolute z-30 border-l border-dashed ml-12 border-gray-300 ${
           type === "start" && "top-1/2 h-1/2"
         } ${type === "end" && "bottom-1/2 h-1/2"} ${
           type === "none" && "top-0 h-full"

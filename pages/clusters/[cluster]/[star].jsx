@@ -1,33 +1,24 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
 import PropTypes from "prop-types";
+import { MDXRemote } from "next-mdx-remote";
+import matter from "gray-matter";
+import { serialize } from "next-mdx-remote/serialize";
 import ClusterLayout from "../../../layouts/ClusterLayout";
-import YoutubeVideo from "../../../components/core/YoutubeVideo";
-import Quote from "../../../components/core/Quote";
 import { getAStar } from "../../../adapters/stars";
-import Layout from "../../../layouts/Layout";
+import BlogLayout from "../../../layouts/BlogLayout";
+import MDXComponents from "../../../components/MDXComponents";
 
-const Star = ({ star }) => (
-  <Layout title={star.title}>
-    <div className="flex flex-col lg:flex-row">
-      <div className=" w-full lg:w-9/12">
-        {star.videoURL && (
-          <section className="mb-12">
-            <YoutubeVideo id={star.videoURL} />
-          </section>
-        )}
-      </div>
-      <div className="w-full lg:w-1/4">
-        {star.note && (
-          <div className="lg:ml-12 flex-1">
-            <Quote text={star.note} />
-          </div>
-        )}
-      </div>
-    </div>
-  </Layout>
+const components = MDXComponents;
+
+const Star = ({ mdxSource, star }) => (
+  <BlogLayout star={star}>
+    <MDXRemote {...mdxSource} components={components} />
+  </BlogLayout>
 );
 
 Star.propTypes = {
+  mdxSource: PropTypes.node,
   star: PropTypes.objectOf(
     PropTypes.shape({
       title: PropTypes.string,
@@ -38,6 +29,7 @@ Star.propTypes = {
 };
 
 Star.defaultProps = {
+  mdxSource: PropTypes.node,
   star: {},
 };
 
@@ -45,9 +37,11 @@ export const getServerSideProps = async ({ params }) => {
   const star = await getAStar(params.star)
     .then((data) => data)
     .catch((err) => err);
-  return {
-    props: { star },
-  };
+  const { content } = matter(star.body);
+  const mdxSource = await serialize(content, {
+    components: MDXComponents,
+  });
+  return { props: { mdxSource, star } };
 };
 
 Star.PageLayout = ClusterLayout;
