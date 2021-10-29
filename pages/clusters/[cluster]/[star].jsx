@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
 import PropTypes from "prop-types";
-import matter from "gray-matter";
 import { MDXRemote } from "next-mdx-remote";
+import matter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
-import BlogLayout from "../../../layouts/BlogLayout";
-import RocketLayout from "../../../layouts/RocketLayout";
+import ClusterLayout from "../../../layouts/ClusterLayout";
 import { getAStar } from "../../../adapters/stars";
+import BlogLayout from "../../../layouts/BlogLayout";
 import MDXComponents from "../../../components/MDXComponents";
 
 const components = MDXComponents;
@@ -33,7 +33,7 @@ Star.defaultProps = {
   star: {},
 };
 
-export async function getServerSideProps({ params }) {
+export const getServerSideProps = async ({ params }) => {
   const star = await getAStar(params.star)
     .then((data) => data)
     .catch((err) => err);
@@ -42,8 +42,8 @@ export async function getServerSideProps({ params }) {
     components: MDXComponents,
   });
   return { props: { mdxSource, star } };
-}
+};
 
-Star.PageLayout = RocketLayout;
+Star.PageLayout = ClusterLayout;
 
 export default Star;

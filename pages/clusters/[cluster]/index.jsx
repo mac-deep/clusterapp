@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import RocketLayout from "../../../layouts/RocketLayout";
-import { getARocket } from "../../../adapters/rockets";
 import Layout from "../../../layouts/Layout";
+import { getACluster } from "../../../adapters";
+import ClusterLayout from "../../../layouts/ClusterLayout";
 
-const Rocket = ({ rocket }) => (
-  <Layout title={rocket.title}>
-    <div>{rocket.title}</div>
+const Cluster = ({ cluster }) => (
+  <Layout title={cluster.title}>
+    <div>{cluster.title}</div>
   </Layout>
 );
 
-Rocket.propTypes = {
-  rocket: PropTypes.objectOf(
+Cluster.propTypes = {
+  cluster: PropTypes.objectOf(
     PropTypes.shape({
       title: PropTypes.string,
       stars: PropTypes.objectOf(
@@ -24,24 +24,24 @@ Rocket.propTypes = {
   ),
 };
 
-Rocket.defaultProps = {
-  rocket: {
-    title: "Rocket name",
+Cluster.defaultProps = {
+  cluster: {
+    title: "cluster name",
     stars: {},
   },
 };
 
 export const getServerSideProps = async ({ params }) => {
-  const rocket = await getARocket(params.rocket)
+  const cluster = await getACluster(params.cluster)
     .then((data) => data)
     .catch((err) => err);
   return {
     props: {
-      rocket,
+      cluster,
     },
   };
 };
 
-Rocket.PageLayout = RocketLayout;
+Cluster.PageLayout = ClusterLayout;
 
-export default Rocket;
+export default Cluster;

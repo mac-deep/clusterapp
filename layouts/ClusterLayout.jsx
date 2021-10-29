@@ -1,118 +1,57 @@
 import React, { useState } from "react";
-import Link from "next/link";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import { MenuIcon } from "@heroicons/react/solid";
 import { useACluster } from "../adapters";
-import Loading from "../components/Loading";
+import Loading from "../components/core/Loading";
 import { ClusterContext } from "../context/ClusterContext";
+import Starbar from "../components/core/Starbar";
+import Layout from "./Layout";
 
 const ClusterLayout = ({ children }) => {
   const router = useRouter();
-  const galaxyId = router.query.galaxy;
-  const superclusterId = router.query.supercluster;
   const clusterId = router.query.cluster;
   const starId = router.query.star;
-
-  const [starbar, setStarbar] = useState(false);
+  const [starbar, setStarbar] = useState(true);
 
   const { cluster, isLoading, isError } = useACluster(clusterId);
-
-  const ListItem = ({ name, slug }) => (
-    <Link href={`/${superclusterId}/${galaxyId}/${clusterId}/${slug}`} passHref>
-      <li
-        className={`cursor-pointer p-4 border-l-4 text-2xl font-normal ease-in border-transparent text-gray-600 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-gray-900 dark:hover:bg-opacity-50 ${
-          router.query.star === slug &&
-          "bg-blue-50 border-l-4 border-blue-400 font-bold  text-gray-900 dark:bg-gray-900 dark:bg-opacity-70"
-        }`}
-      >
-        {name}
-      </li>
-    </Link>
-  );
-
-  ListItem.propTypes = {
-    name: PropTypes.string,
-    slug: PropTypes.string,
-  };
-
-  ListItem.defaultProps = {
-    name: "cluster",
-    slug: "slug",
-  };
 
   if (isError) return "An error has occurred.";
   if (isLoading)
     return (
-      <div className="min-h-screen flex justify-center items-center w-full bg-white dark:bg-dark">
-        <Loading />
-      </div>
+      <Layout title="Loading...">
+        <div className="h-screen flex flex-col items-center pt-96 w-full bg-white dark:bg-dark">
+          <Loading />
+          <p className="text-5xl font-light m-4 text-center">
+            Spinning <span className="font-bold uppercase">{clusterId} </span>
+            🌌 for you!
+          </p>
+        </div>
+      </Layout>
     );
 
   return (
     <ClusterContext.Provider>
-      <div className="relative dark:bg-dark min-h-screen bg-gray-100">
-        <Head>
-          <title>{cluster?.title} | CLUSTER</title>
-        </Head>
-        <div
-          style={{ lineHeight: "4rem" }}
-          className="p-4 h-24 w-full bg-white dark:bg-gray-900 shadow-lg z-50 fixed text-5xl flex justify-between items-center"
-        >
-          <div className="truncate flex">
-            <Link href={`/${superclusterId}/${galaxyId}/${clusterId}`} passHref>
-              <span className="font-bold hidden md:block uppercase text-blue-700 dark:text-blue-400 cursor-pointer">
-                {clusterId}&nbsp;
-              </span>
-            </Link>
-            <span className="font-normal text-black dark:text-white">
-              &#47;&nbsp;
-            </span>
-            {starId && (
-              <span className="font-normal text-black dark:text-white">
-                {
-                  cluster.stars.filter((star) => star.videoURL === starId)[0]
-                    .title
-                }
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center pl-2 sm:hidden">
-            <button
-              type="button"
-              onClick={() => setStarbar(!starbar)}
-              onKeyPress={() => setStarbar(!starbar)}
-            >
-              <MenuIcon className="w-12 h-12" />
-            </button>
-          </div>
-        </div>
-        <div className="pt-24">
-          <aside
-            className={` ${
-              starbar ? "-translate-x-0 " : "-translate-x-full"
-            } transform transition w-11/12 backdrop-filter duration-300 ease-in-out sm:translate-x-0 z-40 sm:block sm:w-80 bg-gray-50 dark:bg-dark h-screen fixed dark:light-shadow-xl shadow-xl`}
+      <div className="relative dark:bg-black bg-gray-100 min-h-screen">
+        <div className="flex">
+          <Starbar
+            className={`fixed top-0 left-0 lg:w-1/4 h-screen transform transition duration-300 ease-in-out z-40 w-9/12 bg-gray-50 dark:bg-dark dark:light-shadow-xl shadow-xl ${
+              starbar ? "translate-x-0" : "-translate-x-full"
+            }`}
+            title={cluster.title}
+            data={cluster.stars}
+            isOpen={starbar}
+            onClose={() => setStarbar(!starbar)}
+            parentLink={`/clusters/${clusterId}`}
+          />
+          <div
+            className={`flex flex-col flex-1 ${
+              starbar ? "hidden lg:flex lg:ml-1/4" : "block"
+            } `}
           >
-            {cluster ? (
-              <ul className="overflow-y-auto h-full pb-8">
-                {cluster.stars?.map((star) => (
-                  <ListItem
-                    name={star.title}
-                    key={star.id}
-                    slug={star.videoURL}
-                  />
-                ))}
-              </ul>
-            ) : (
-              <div className="flex justify-center mt-96 h-full">
-                <Loading />
-              </div>
-            )}
-          </aside>
-
-          <main className="z-0 sm:ml-80 p-12 ">{children}</main>
+            <main className="z-0 transform ease-in-out transition duration-300 p-8 md:p-12 flex justify-center">
+              {children}
+            </main>
+          </div>
         </div>
       </div>
     </ClusterContext.Provider>

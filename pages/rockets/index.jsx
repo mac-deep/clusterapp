@@ -3,17 +3,15 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import { getAllRockets } from "../../adapters/rockets";
 
-function Rockets({ rockets }) {
-  return (
-    <div>
-      {rockets.map((rocket) => (
-        <Link href={`/rockets/${rocket.slug}`} key={rocket.id} passHref>
-          <h1>{rocket.title}</h1>
-        </Link>
-      ))}
-    </div>
-  );
-}
+const Rockets = ({ rockets }) => (
+  <div>
+    {rockets.map((rocket) => (
+      <Link href={`/rockets/${rocket.slug}`} key={rocket.id} passHref>
+        <h1>{rocket.title}</h1>
+      </Link>
+    ))}
+  </div>
+);
 
 Rockets.propTypes = {
   rockets: PropTypes.arrayOf(
