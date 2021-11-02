@@ -13,7 +13,7 @@ const Home = () => (
       <h4 className="text-blue-700 dark:text-white text-center text-5xl font-extralight">
         Universe of Knowledge
       </h4>
-      <div className="p-8 mt-16 w-full flex">
+      <div className="p-8 mt-16 flex flex-wrap">
         <SuperTitle title="Clusters 🌌" link="/clusters" />
         <SuperTitle title="Rockets 🚀" link="/rockets" />
       </div>
