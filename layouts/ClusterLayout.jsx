@@ -1,69 +1,94 @@
-import React, { useState } from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import NextLink from "next/link";
+import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Avatar, CircularProgress, Link, ListItemButton } from "@mui/material";
 import { useRouter } from "next/router";
-import PropTypes from "prop-types";
 import { useACluster } from "../adapters";
-import Loading from "../components/core/Loading";
-import { ClusterContext } from "../context/ClusterContext";
-import Starbar from "../components/core/Starbar";
 import Layout from "./Layout";
+import Sidebar from "../components/core/Sidebar";
 
-const ClusterLayout = ({ children }) => {
+export default function ClusterLayout({ children }) {
   const router = useRouter();
+  const [starbar, setStarbar] = React.useState(true);
+  const [show, setShow] = React.useState(false);
   const clusterId = router.query.cluster;
   const starId = router.query.star;
-  const [starbar, setStarbar] = useState(true);
-
   const { cluster, isLoading, isError } = useACluster(clusterId);
 
+  const StarList = ({ data, parentLink }) => (
+    <Box width="300px" role="presentation" onClick={() => setStarbar(!starbar)}>
+      <List>
+        {data.map((star) => (
+          <NextLink href={`${parentLink}/${star.videoURL}`}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText primary={star.title} />
+              </ListItemButton>
+            </ListItem>
+          </NextLink>
+        ))}
+      </List>
+    </Box>
+  );
   if (isError) return "An error has occurred.";
   if (isLoading)
     return (
       <Layout title="Loading...">
-        <div className="h-screen flex flex-col items-center pt-96 w-full bg-white dark:bg-dark">
-          <Loading />
-          <p className="text-5xl font-light m-4 text-center">
-            Spinning <span className="font-bold uppercase">{clusterId} </span>
+        <Box
+          height="100vh"
+          display="flex"
+          flexDirection="column"
+          paddingTop="40vh"
+          alignItems="center"
+        >
+          <CircularProgress />
+          <Typography variant="h4" textAlign="center">
+            Spinning <span className="font-bold uppercase">{clusterId}</span>
             🌌 for you!
-          </p>
-        </div>
+          </Typography>
+        </Box>
       </Layout>
     );
-
   return (
-    <ClusterContext.Provider>
-      <div className="relative dark:bg-black bg-gray-100 min-h-screen">
-        <div className="flex">
-          <Starbar
-            className={`fixed top-0 left-0 lg:w-1/4 h-screen transform transition duration-300 ease-in-out z-40 w-9/12 bg-gray-50 dark:bg-dark dark:light-shadow-xl shadow-xl ${
-              starbar ? "translate-x-0" : "-translate-x-full"
-            }`}
-            title={cluster.title}
-            data={cluster.stars}
-            isOpen={starbar}
-            onClose={() => setStarbar(!starbar)}
-            parentLink={`/clusters/${clusterId}`}
-          />
-          <div
-            className={`flex flex-col flex-1 ${
-              starbar ? "hidden lg:flex lg:ml-1/4" : "block"
-            } `}
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            onClick={() => setStarbar(!starbar)}
+            size="large"
+            edge="Listt"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
           >
-            <main className="z-0 transform ease-in-out transition duration-300 p-8 md:p-12 flex justify-center">
-              {children}
-            </main>
-          </div>
-        </div>
-      </div>
-    </ClusterContext.Provider>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {cluster.title}
+          </Typography>
+          <IconButton onClick={() => setShow(!show)}>
+            <Avatar sx={{ width: 32, height: 32 }} />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Drawer anchor="right" open={show} onClose={() => setShow(!show)}>
+        <Sidebar />
+      </Drawer>
+      <Drawer anchor="left" open={starbar} onClose={() => setStarbar(!starbar)}>
+        <StarList parentLink={`/clusters/${clusterId}`} data={cluster.stars} />
+      </Drawer>
+      {children}
+    </>
   );
-};
-
-ClusterLayout.propTypes = {
-  children: PropTypes.objectOf(PropTypes.any),
-};
-
-ClusterLayout.defaultProps = {
-  children: {},
-};
-
-export default ClusterLayout;
+}

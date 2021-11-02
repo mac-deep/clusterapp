@@ -1,16 +1,23 @@
 import React from "react";
-import Link from "next/link";
+import { Box, Container, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { getAllClusters } from "../../adapters";
 import Layout from "../../layouts/Layout";
+import ClusterCard from "../../components/core/ClusterCard";
+import Navbar from "../../components/core/Navbar";
 
 const Clusters = ({ clusters }) => (
   <Layout>
-    {clusters.map((cluster) => (
-      <Link href={`/clusters/${cluster.slug}`} key={cluster.id} passHref>
-        <h1>{cluster.title}</h1>
-      </Link>
-    ))}
+    <Navbar />
+    <Container sx={{ marginTop: "1rem" }}>
+      <Grid container spacing={3}>
+        {clusters.map((cluster) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <ClusterCard cluster={cluster} key={cluster.id} />
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   </Layout>
 );
 

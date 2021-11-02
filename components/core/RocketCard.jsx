@@ -1,24 +1,50 @@
 import React from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
+import NextLink from "next/link";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import { Button, IconButton, Typography } from "@mui/material";
+import ShareIcon from "@mui/icons-material/Share";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
-const RocketCard = ({ title, data }) => (
-  <div className="w-full h-full lg:w-1/3 sm:w-1/2 ">
-    <div className="m-8 p-8 shadow-2xl dark:light-shadow-2xl transition-shadow rounded-3xl">
-      <h1 className="text-6xl font-semibold mb-8 text-gray-800 dark:text-white">
-        {title}
-      </h1>
-      <ul>
-        {data.map((rocket) => (
-          <Link href={`/rockets/${rocket.slug}`} key={rocket.id} passHref>
-            <li className="text-3xl p-2 text-gray-500 dark:hover:text-gray-300 hover:text-gray-800 hover:font-bold cursor-pointer">
-              {rocket.title}
-            </li>
-          </Link>
-        ))}
-      </ul>
-    </div>
-  </div>
+const RocketCard = ({ rocket, parentLink }) => (
+  <Card
+    sx={{
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+    }}
+  >
+    <CardHeader
+      action={
+        <IconButton>
+          <BookmarkBorderIcon />
+        </IconButton>
+      }
+      disableTypography
+      title={<Typography variant="h5">{rocket.title}</Typography>}
+    />
+
+    <CardActions sx={{ justifyContent: "space-between" }}>
+      <NextLink href={`/rockets/${rocket.slug}`} passHref>
+        <Button
+          color="success"
+          sx={{ boxShadow: 0 }}
+          variant="contained"
+          fullWidth
+        >
+          Launch 🚀
+        </Button>
+      </NextLink>
+      <IconButton size="small" aria-label="share">
+        <ShareIcon />
+      </IconButton>
+    </CardActions>
+  </Card>
 );
 
 RocketCard.propTypes = {

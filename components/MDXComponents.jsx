@@ -1,40 +1,18 @@
 /* eslint-disable react/prop-types */
+import { Paper, Typography } from "@mui/material";
 import React from "react";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
 const MDXComponents = {
-  h1: (props) => (
-    <h1 className="text-7xl text-blueGray-800 dark:text-blueGray-200 mt-12 mb-4">
-      {props.children}
-    </h1>
-  ),
-  h2: (props) => (
-    <h2 className="text-6xl text-blueGray-800 dark:text-blueGray-200 font-medium mt-12 mb-4">
-      {props.children}
-    </h2>
-  ),
-  h3: (props) => (
-    <h3 className="text-5xl text-blueGray-800 dark:text-blueGray-200 font-medium mt-12 mb-4">
-      {props.children}
-    </h3>
-  ),
-  h4: (props) => (
-    <h4 className="text-4xl text-blueGray-800 dark:text-blueGray-200 mt-12 mb-4">
-      {props.children}
-    </h4>
-  ),
-  h5: (props) => <h5 className="text-3xl mt-12 mb-4">{props.children}</h5>,
-  h6: (props) => <h6 className="text-4xl mt-12 mb-4">{props.children}</h6>,
-  strong: (props) => (
-    <strong className="font-bold text-gray-700 dark:text-gray-200">
-      {props.children}
-    </strong>
-  ),
-  p: (props) => (
-    <p className="sm:text-3xl text-xl text-justify font-normal text-gray-700 dark:text-gray-400 ">
-      {props.children}
-    </p>
-  ),
+  h1: (props) => <Typography variant="h1" {...props} />,
+  h2: (props) => <Typography variant="h2" {...props} />,
+  h3: (props) => <Typography variant="h3" {...props} />,
+  h4: (props) => <Typography variant="h4" {...props} />,
+  h5: (props) => <Typography variant="h5" {...props} />,
+  h6: (props) => <Typography variant="h6" {...props} />,
+
+  strong: (props) => <strong>{props.children}</strong>,
+  p: (props) => <Typography variant="body1" {...props} />,
   YoutubeVideo: ({ id }) => (
     <div
       className="relative overflow-hidden mb-16"
@@ -53,9 +31,7 @@ const MDXComponents = {
     </div>
   ),
   blockquote: (props) => (
-    <blockquote className="border-l-4 text-4xl mt-12 mb-4 tracking-normal rounded-md border-blue-600 dark:border-blue-100 dark:bg-blue-900 bg-blue-100 p-4">
-      {props.children}
-    </blockquote>
+    <Paper sx={{ background: "brown" }}>{props.children}</Paper>
   ),
   TwitterTweetEmbed: ({ id }) => (
     <div className="w-full">

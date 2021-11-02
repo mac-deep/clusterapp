@@ -1,11 +1,24 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useRouter } from "next/router";
+import NextLink from "next/link";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
+import {
+  AppBar,
+  Button,
+  CircularProgress,
+  Drawer,
+  IconButton,
+  ListItemButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { useARocket } from "../adapters";
-import Loading from "../components/core/Loading";
-import Starbar from "../components/core/Starbar";
-import { RocketContext } from "../context/RocketContext";
 import Layout from "./Layout";
+import { Box } from "@mui/system";
 
 const RocketLayout = ({ children }) => {
   const router = useRouter();
@@ -13,46 +26,66 @@ const RocketLayout = ({ children }) => {
   const [starbar, setStarbar] = useState(true);
   const { rocket, isLoading, isError } = useARocket(rocketId);
 
+  const StarList = ({ data, parentLink }) => (
+    <Box width="300px" role="presentation" onClick={() => setStarbar(!starbar)}>
+      <List>
+        {data.map((star) => (
+          <NextLink href={`${parentLink}/${star.videoURL}`}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText primary={star.title} />
+              </ListItemButton>
+            </ListItem>
+          </NextLink>
+        ))}
+      </List>
+    </Box>
+  );
   if (isError) return "An error has occurred.";
   if (isLoading)
     return (
       <Layout title="Loading...">
-        <div className="h-screen flex flex-col items-center pt-96 w-full bg-white dark:bg-dark">
-          <Loading />
-          <p className="text-5xl font-light my-4 text-center">
-            Launching <span className="font-bold">{rocketId}</span> 🚀 for
-            you...
-          </p>
-        </div>
+        <Box
+          height="100vh"
+          display="flex"
+          flexDirection="column"
+          paddingTop="40vh"
+          alignItems="center"
+        >
+          <CircularProgress />
+          <Typography variant="h4" textAlign="center">
+            Launching <span className="font-bold uppercase">{rocketId} </span>
+            for you 🚀...
+          </Typography>
+        </Box>
       </Layout>
     );
 
   return (
-    <RocketContext.Provider value={{ rocket }}>
-      <div className="relative dark:bg-dark bg-gray-100 min-h-screen">
-        <div className="flex">
-          <Starbar
-            className={`fixed top-0 left-0 lg:w-1/4 h-screen transform transition duration-300 ease-in-out z-40 w-9/12 bg-gray-50 dark:bg-dark dark:light-shadow-xl shadow-xl ${
-              starbar ? "translate-x-0" : "-translate-x-full"
-            }`}
-            title={rocket.title}
-            data={rocket.stars}
-            isOpen={starbar}
-            onClose={() => setStarbar(!starbar)}
-            parentLink={`/rockets/${rocketId}`}
-          />
-          <div
-            className={`flex flex-col flex-1 ${
-              starbar ? "hidden lg:flex lg:ml-1/4" : "block"
-            } `}
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            onClick={() => setStarbar(!starbar)}
+            size="large"
+            edge="Listt"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
           >
-            <main className="z-0 transform ease-in-out transition duration-300 p-8 md:p-12 flex justify-center">
-              {children}
-            </main>
-          </div>
-        </div>
-      </div>
-    </RocketContext.Provider>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {rocket.title}
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Drawer anchor="left" open={starbar} onClose={() => setStarbar(!starbar)}>
+        <StarList parentLink={`/rockets/${rocketId}`} data={rocket.stars} />
+      </Drawer>
+      {children}
+    </>
   );
 };
 

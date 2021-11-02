@@ -90,28 +90,3 @@ a {
 * {
   box-sizing: border-box;
 }
-
-/* --------------------font size for responsiveness-------------------- */
-@media (max-width: 1440px) {
-  html {
-    font-size: 75%;
-  }
-}
-
-@media (max-width: 1280px) {
-  html {
-    font-size: 67.5%;
-  }
-}
-
-@media (max-width: 960px) {
-  html {
-    font-size: 67.5%;
-  }
-}
-
-@media (max-width: 650px) {
-  html {
-    font-size: 67%;
-  }
-}
