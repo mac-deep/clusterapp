@@ -1,16 +1,13 @@
 import React from "react";
-import Link from "next/link";
 import PropTypes from "prop-types";
 import { getAllRockets } from "../../adapters/rockets";
+import Layout from "../../layouts/Layout";
+import SuperList from "../../components/core/SuperList";
 
 const Rockets = ({ rockets }) => (
-  <div>
-    {rockets.map((rocket) => (
-      <Link href={`/rockets/${rocket.slug}`} key={rocket.id} passHref>
-        <h1>{rocket.title}</h1>
-      </Link>
-    ))}
-  </div>
+  <Layout>
+    <SuperList data={rockets} title="Rockets🚀" parentLink="/rockets" />
+  </Layout>
 );
 
 Rockets.propTypes = {

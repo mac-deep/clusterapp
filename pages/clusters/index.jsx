@@ -1,16 +1,12 @@
 import React from "react";
-import Link from "next/link";
 import PropTypes from "prop-types";
 import { getAllClusters } from "../../adapters";
 import Layout from "../../layouts/Layout";
+import SuperList from "../../components/core/SuperList";
 
 const Clusters = ({ clusters }) => (
   <Layout>
-    {clusters.map((cluster) => (
-      <Link href={`/clusters/${cluster.slug}`} key={cluster.id} passHref>
-        <h1>{cluster.title}</h1>
-      </Link>
-    ))}
+    <SuperList data={clusters} title="Clusters 🌌" parentLink="/clusters" />
   </Layout>
 );
 
