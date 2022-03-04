@@ -26,6 +26,8 @@ export const getServerSideProps = async () => {
   const rockets = await getAllRockets()
     .then((data) => data)
     .catch((err) => err);
+
+  console.log(rockets);
   return {
     props: { rockets },
   };
